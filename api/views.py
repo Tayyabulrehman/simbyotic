@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 import datetime as dt
 from rest_framework import serializers
 
-from api.models import schedule_meeting
+from api.models import schedule_meeting, send_contact_us_email
 
 
 class BaseAPIView(APIView):
@@ -148,15 +148,12 @@ class BaseAPIView(APIView):
 
 class BusinessDemoRequestPOSTAPIViews(BaseAPIView):
     class BusinessDemoRequestSerializer(serializers.Serializer):
-        first_name = serializers.CharField()
-        last_name = serializers.CharField()
+        name = serializers.CharField()
         email = serializers.EmailField()
-        title = serializers.CharField(write_only=True)
-        message = serializers.CharField()
-        meeting_date = serializers.DateField()
-        meeting_time = serializers.TimeField()
-        meeting_link = serializers.URLField(read_only=True)
-        timezone = serializers.CharField(required=False, allow_null=True, allow_blank=True)
+        job_title = serializers.CharField(write_only=True)
+        company = serializers.CharField()
+        industry = serializers.CharField()
+        country = serializers.CharField()
 
         # status = serializers.CharField(required=False, allow_blank=True, allow_null=True)
         #
@@ -184,41 +181,14 @@ class BusinessDemoRequestPOSTAPIViews(BaseAPIView):
             if serializer.is_valid():
                 data = serializer.validated_data
                 # serializer.save()
-                start = dt.datetime.combine(
-                    data["meeting_date"],
-                    data["meeting_time"],
-                )
-                end = dt.datetime.combine(
-                    data["meeting_date"],
-                    data["meeting_time"],
-                )
-                # target_timezone = pytz.timezone(settings.TIMEZONE)
-                # start = start.replace(tzinfo=target_timezone)
-                # end = end.replace(tzinfo=target_timezone)
-
-                # dt.datetime.combine(serializer.instance.meeting_date, serializer.instance.meeting_time)
-                a = schedule_meeting(
-                    start=start.isoformat(),
-                    end=end.isoformat(),
-                    title="Contact ",
-                    description=serializer.instance.message,
-                    zone=serializer.instance.timezone,
-                    attendees=[{"email": serializer.instance.email}],
-                )
-                print(a)
-                serializer.instance.meeting_link = a
-                serializer.instance.save()
-                # send email to superadmin
-
-                # send main to business admin
-
-                print(a)
+                send_contact_us_email(**data
+                                      )
                 return self.send_response(
                     success=True,
                     code=f"201",
                     status_code=status.HTTP_201_CREATED,
                     payload=serializer.data,
-                    description="Request Sent Successfully",
+                    description="Your Response submitted successfully",
                 )
             else:
                 return self.send_response(

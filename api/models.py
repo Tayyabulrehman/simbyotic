@@ -79,3 +79,28 @@ def schedule_meeting(title, description, start, end, attendees, zone):
         except Exception as e:
             print(e)
             return
+
+
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+
+
+def send_contact_us_email(name, email, job_title, company,industry, country):
+    # Render the HTML template with context
+    html_content = render_to_string('contact.html', {
+        'name': name,
+        'job_title': job_title,
+        'company': company,
+        "industry":industry,
+        'country': country,
+    })
+
+    # Configure and send the email
+    email_message = EmailMessage(
+        subject="Support Form Submission",
+        body=html_content,
+        from_email='deveoper0@gmail.com',
+        to=[email],  # Admin email
+    )
+    email_message.content_subtype = 'html'  # Set email type to HTML
+    email_message.send()
