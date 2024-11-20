@@ -39,6 +39,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -130,3 +131,4 @@ EMAIL_USE_SSL = False  # Use True for SSL if your server requires it
 EMAIL_HOST_USER = 'deveoper0@gmail.com'  # Your email address
 EMAIL_HOST_PASSWORD = "vnbircedanlubmfy"# Your email password or app-specific password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+CORS_ORIGIN_ALLOW_ALL = True
