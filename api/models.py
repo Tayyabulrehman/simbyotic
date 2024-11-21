@@ -102,7 +102,7 @@ def send_contact_us_email(name, email, job_title, company,industry, country):
         subject="Support Form Submission",
         body=html_content,
         from_email='deveoper0@gmail.com',
-        to=settings.SUPPORT_EMAIL,  # Admin email
+        to=[settings.SUPPORT_EMAIL],  # Admin email
     )
     email_message.content_subtype = 'html'  # Set email type to HTML
     email_message.send()
