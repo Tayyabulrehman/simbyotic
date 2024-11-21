@@ -132,3 +132,5 @@ EMAIL_HOST_USER = 'deveoper0@gmail.com'  # Your email address
 EMAIL_HOST_PASSWORD = "vnbircedanlubmfy"# Your email password or app-specific password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 CORS_ORIGIN_ALLOW_ALL = True
+
+SUPPORT_EMAIL ='deveoper0@gmail.com'

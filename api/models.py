@@ -1,5 +1,6 @@
 from uuid import uuid4
 
+from django.conf import settings
 from django.db import models
 
 from google.oauth2.credentials import Credentials
@@ -93,6 +94,7 @@ def send_contact_us_email(name, email, job_title, company,industry, country):
         'company': company,
         "industry":industry,
         'country': country,
+        'email':email
     })
 
     # Configure and send the email
@@ -100,7 +102,7 @@ def send_contact_us_email(name, email, job_title, company,industry, country):
         subject="Support Form Submission",
         body=html_content,
         from_email='deveoper0@gmail.com',
-        to=[email],  # Admin email
+        to=settings.SUPPORT_EMAIL,  # Admin email
     )
     email_message.content_subtype = 'html'  # Set email type to HTML
     email_message.send()
